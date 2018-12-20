@@ -17,6 +17,7 @@ import (
 
 	client "github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/client/utils"
 	"github.com/cosmos/cosmos-sdk/cmd/gaia/app"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/mintkey"
@@ -246,12 +247,14 @@ func TestCoinSendGenerateSignAndBroadcast(t *testing.T) {
 	var signedMsg auth.StdTx
 
 	payload := authrest.SignBody{
-		Tx:               msg,
-		LocalAccountName: name1,
-		Password:         pw,
-		ChainID:          viper.GetString(client.FlagChainID),
-		AccountNumber:    accnum,
-		Sequence:         sequence,
+		Tx: msg,
+		BaseReq: utils.BaseReq{
+			Name:          name1,
+			Password:      pw,
+			ChainID:       viper.GetString(client.FlagChainID),
+			AccountNumber: accnum,
+			Sequence:      sequence,
+		},
 	}
 	json, err := cdc.MarshalJSON(payload)
 	require.Nil(t, err)
