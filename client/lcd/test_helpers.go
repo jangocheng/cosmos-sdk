@@ -644,13 +644,9 @@ func doSign(t *testing.T, port, name, password, chainID string, accnum, sequence
 	var signedMsg auth.StdTx
 	payload := authrest.SignBody{
 		Tx: msg,
-		BaseReq: utils.BaseReq{
-			Name:          name,
-			Password:      password,
-			ChainID:       chainID,
-			AccountNumber: accnum,
-			Sequence:      sequence,
-		},
+		BaseReq: utils.NewBaseReq(
+			name, password, "", chainID, "", "", accnum, sequence, nil, false, false,
+		),
 	}
 	json, err := cdc.MarshalJSON(payload)
 	require.Nil(t, err)
