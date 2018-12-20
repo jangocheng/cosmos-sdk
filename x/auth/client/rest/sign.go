@@ -31,7 +31,6 @@ func SignTxRequestHandlerFn(cdc *codec.Codec, cliCtx context.CLIContext) http.Ha
 			return
 		}
 
-		// validate request
 		if !m.ValidateBasic(w) {
 			return
 		}
