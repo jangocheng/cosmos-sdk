@@ -15,6 +15,9 @@ BREAKING CHANGES
 * Gaia
   * https://github.com/cosmos/cosmos-sdk/issues/2838 - Move store keys to constants
 
+* Gaia REST API
+  * [\#3176](https://github.com/cosmos/cosmos-sdk/issues/3176) `tx/sign` endpoint now expects `BaseReq` fields as nested object.
+
 * SDK
   * [\#3064](https://github.com/cosmos/cosmos-sdk/issues/3064) Sanitize `sdk.Coin` denom. Coins denoms are now case insensitive, i.e. 100fooToken equals to 100FOOTOKEN.
 
@@ -40,7 +43,7 @@ FEATURES
 
 IMPROVEMENTS
 
-* Gaia REST API (`gaiacli advanced rest-server`)
+* Gaia REST API
   * [\#3176](https://github.com/cosmos/cosmos-sdk/issues/3176) Validate tx/sign endpoint POST body.
 
 * Gaia CLI  (`gaiacli`)
@@ -63,7 +66,7 @@ IMPROVEMENTS
 
 BUG FIXES
 
-* Gaia REST API (`gaiacli advanced rest-server`)
+* Gaia REST API
 
 * Gaia CLI  (`gaiacli`)
 
