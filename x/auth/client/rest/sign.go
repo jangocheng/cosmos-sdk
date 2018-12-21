@@ -14,9 +14,9 @@ import (
 
 // SignBody defines the properties of a sign request's body.
 type SignBody struct {
-	Tx        auth.StdTx `json:"tx"`
-	AppendSig bool       `json:"append_sig"`
-	utils.BaseReq
+	Tx        auth.StdTx    `json:"tx"`
+	AppendSig bool          `json:"append_sig"`
+	BaseReq   utils.BaseReq `json:"base_req"`
 }
 
 // nolint: unparam
@@ -31,7 +31,7 @@ func SignTxRequestHandlerFn(cdc *codec.Codec, cliCtx context.CLIContext) http.Ha
 			return
 		}
 
-		if !m.ValidateBasic(w) {
+		if !m.BaseReq.ValidateBasic(w) {
 			return
 		}
 
@@ -42,10 +42,18 @@ func SignTxRequestHandlerFn(cdc *codec.Codec, cliCtx context.CLIContext) http.Ha
 			return
 		}
 
-		txBldr := authtxb.NewTxBuilder(utils.GetTxEncoder(cdc), m.AccountNumber,
-			m.Sequence, m.Tx.Fee.Gas, 1.0, false, m.ChainID, m.Tx.GetMemo(), m.Tx.Fee.Amount)
+		txBldr := authtxb.NewTxBuilder(
+			utils.GetTxEncoder(cdc),
+			m.BaseReq.AccountNumber,
+			m.BaseReq.Sequence,
+			m.Tx.Fee.Gas,
+			1.0,
+			false,
+			m.BaseReq.ChainID,
+			m.Tx.GetMemo(),
+			m.Tx.Fee.Amount)
 
-		signedTx, err := txBldr.SignStdTx(m.Name, m.Password, m.Tx, m.AppendSig)
+		signedTx, err := txBldr.SignStdTx(m.BaseReq.Name, m.BaseReq.Password, m.Tx, m.AppendSig)
 		if keyerror.IsErrKeyNotFound(err) {
 			utils.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
